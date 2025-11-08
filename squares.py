@@ -12,7 +12,7 @@ def average_of_squares(list_of_numbers, list_of_weights=None):
     >>> average_of_squares([1, 2, 4])
     7.0
     >>> average_of_squares([2, 4], [1, 0.5])
-    6.0
+    8.0
     >>> average_of_squares([1, 2, 4], [1, 0.5])
     Traceback (most recent call last):
     AssertionError: weights and numbers must have same length
@@ -24,12 +24,23 @@ def average_of_squares(list_of_numbers, list_of_weights=None):
         effective_weights = list_of_weights
     else:
         effective_weights = [1] * len(list_of_numbers)
-    squares = [
+    sum_of_weighted_squares = sum(
         weight * number * number
         for number, weight
         in zip(list_of_numbers, effective_weights)
-    ]
-    return sum(squares)
+    )
+    # Calculate the sum of all weights (Denominator)
+    sum_of_weights = sum(effective_weights)
+    
+    # Handle division by zero if all weights are zero
+    if sum_of_weights == 0:
+        # Depending on context, you might return 0, raise an error, or handle as NaN.
+        # Returning 0 might be acceptable if all inputs were zero and weights were zero.
+        # However, for robustness, raising an error or returning a specific value is better.
+        raise ValueError("Sum of weights cannot be zero for weighted average calculation.")
+
+    # Return the weighted average of squares
+    return sum_of_weighted_squares / sum_of_weights
 
 
 def convert_numbers(list_of_strings):
@@ -38,7 +49,7 @@ def convert_numbers(list_of_strings):
     Example:
     --------
     >>> convert_numbers(["4", " 8 ", "15 16", " 23    42 "])
-    [4, 8, 15, 16]
+    [4, 8, 15, 16, 23, 42]
 
     """
     all_numbers = []
@@ -47,7 +58,7 @@ def convert_numbers(list_of_strings):
         # whitespace, and collect them into a single list...
         all_numbers.extend([token.strip() for token in s.split()])
     # ...then convert each substring into a number
-    return [float(number_string) for number_string in all_numbers]
+    return [int(number_string) for number_string in all_numbers]
 
 
 if __name__ == "__main__":
