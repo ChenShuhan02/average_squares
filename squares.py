@@ -73,10 +73,27 @@ if __name__ == "__main__":
         help='A sequence of numbers to calculate the average of their squares'
     )
     
+    parser.add_argument(
+        '--weights', 
+        metavar='W', 
+        type=float, 
+        nargs='+',  
+        required=False, 
+        help='An optional list of weights.'
+    )
+
     args = parser.parse_args()
     
     numbers = args.numbers
-    weights = None  
+    weights = args.weights
+
+    if weights:
+        print(f"Numbers provided: {numbers}")
+        print(f"Weights provided: {weights}")
+
+    else:
+        print(f"Numbers provided: {numbers}")
+        print("No weights provided, using constant weights.")
 
     result = average_of_squares(numbers, weights)
     print(f"Average of squares: {result}")
